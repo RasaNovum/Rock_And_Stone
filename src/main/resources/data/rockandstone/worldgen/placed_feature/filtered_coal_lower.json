@@ -1,0 +1,26 @@
+{
+  "feature": {
+    "type": "minecraft:ore",
+    "config": {
+      "discard_chance_on_air_exposure": 0.5,
+      "size": 9,
+      "targets": [
+        {
+          "state": { "Name": "minecraft:coal_ore" },
+          "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }
+        },
+        {
+          "state": { "Name": "minecraft:deepslate_coal_ore" },
+          "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }
+        }
+      ]
+    }
+  },
+  "placement": [
+    { "type": "minecraft:count", "count": 20 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "min_inclusive": { "absolute": -64 }, "max_inclusive": { "absolute": 48 } } },
+    { "type": "rockandstone:noise_filter", "min_temp": -0.3, "max_temp": 0.6, "min_humidity": 0.0, "min_erosion": 0.0 },
+    { "type": "minecraft:biome" }
+  ]
+}
