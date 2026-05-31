@@ -1,4 +1,4 @@
-package net.rasanovum.rockandstone;
+package net.rasanovum.rockandstone.util;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.*;

@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.rasanovum.rockandstone.util.AdvancementTrigger;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
 import net.rasanovum.rockandstone.util.OreScanner;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
@@ -131,6 +132,6 @@ public class RockAndStone implements ModInitializer {
 			}
 
 		});
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("We're rich!");
 	}
 }
