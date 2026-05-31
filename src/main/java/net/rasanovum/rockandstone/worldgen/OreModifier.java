@@ -1,4 +1,4 @@
-package net.rasanovum.rockandstone;
+package net.rasanovum.rockandstone.worldgen;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;

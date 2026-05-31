@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_ore"
+    },
+    "title": {
+      "text": "Struck it Rich!"
+    },
+    "description": {
+      "text": "Enter a high-altitude, low-erosion peak perfect for iron deposits."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "entered_zone": {
+      "trigger": "rockandstone:geological_hotspot",
+      "conditions": {
+        "ore_type": "filtered_ore_iron_upper"
+      }
+    }
+  }
+}

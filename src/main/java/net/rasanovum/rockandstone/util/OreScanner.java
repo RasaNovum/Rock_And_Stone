@@ -1,4 +1,4 @@
-package net.rasanovum.rockandstone;
+package net.rasanovum.rockandstone.util;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,7 +24,7 @@ public class OreScanner {
                     int radius = 16;
                     Map<Block, Integer> oreCounts = new HashMap<>();
 
-                    source.sendSystemMessage(Component.literal("Scanning area..."));
+                    source.sendSystemMessage(Component.translatable("commands.rockandstone.scan"));
 
                     for (int x = -radius; x <= radius; x++) {
                         for (int z = -radius; z <= radius; z++) {
@@ -41,7 +41,7 @@ public class OreScanner {
                     }
 
                     if (oreCounts.isEmpty()) {
-                        source.sendSystemMessage(Component.literal("No ores found in this radius."));
+                        source.sendSystemMessage(Component.translatable("commands.rockandstone.scan_no_results"));
                     } else {
                         oreCounts.forEach((block, count) -> {
                             source.sendSystemMessage(Component.literal(block.getName().getString() + ": " + count));

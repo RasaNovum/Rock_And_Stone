@@ -1,0 +1,4 @@
+{
+  "commands.rockandstone.scan": "Scanning for ores...",
+  "commands.rockandstone.scan_no_results": "No ores found during scan."
+}

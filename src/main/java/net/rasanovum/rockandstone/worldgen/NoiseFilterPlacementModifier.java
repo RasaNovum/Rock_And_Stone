@@ -50,6 +50,17 @@ public class NoiseFilterPlacementModifier extends PlacementModifier {
         this.maxRidges = maxPV;
     }
 
+    public double getMinTemp() { return this.minTemp; }
+    public double getMaxTemp() { return this.maxTemp; }
+    public double getMinHumidity() { return this.minHumidity; }
+    public double getMaxHumidity() { return this.maxHumidity; }
+    public double getMinErosion() { return this.minErosion; }
+    public double getMaxErosion() { return this.maxErosion; }
+    public double getMinContinentalness() { return this.minContinentalness; }
+    public double getMaxContinentalness() { return this.maxContinentalness; }
+    public double getMinRidges() { return this.minRidges; }
+    public double getMaxRidges() { return this.maxRidges; }
+
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
         WorldGenLevel level = context.getLevel();
