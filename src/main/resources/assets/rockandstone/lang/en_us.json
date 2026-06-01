@@ -1,4 +1,6 @@
 {
   "commands.rockandstone.scan": "Scanning for ores...",
-  "commands.rockandstone.scan_no_results": "No ores found during scan."
+  "commands.rockandstone.scan_no_results": "No ores found during scan.",
+  "commands.rockandstone.scan_results": "--- ORE SCAN RESULTS ---",
+  "commands.rockandstone.radius_scan_message": "Scanning chunks for ore placement with a radius of: "
 }
