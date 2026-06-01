@@ -17,17 +17,10 @@
 	"entrypoints": {
 		"main": [
 			"net.rasanovum.rockandstone.RockAndStone"
-		],
-		"client": [
-			"net.rasanovum.rockandstone.client.RockAndStoneClient"
 		]
 	},
 	"mixins": [
-		"rock-and-stone.mixins.json",
-		{
-			"config": "rock-and-stone.client.mixins.json",
-			"environment": "client"
-		}
+		"rock-and-stone.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.2",
