@@ -16,15 +16,15 @@
           "absolute": 384
         },
         "min_inclusive": {
-          "absolute": 96
+          "absolute": 72
         }
       }
     },
     { "type": "rockandstone:noise_filter",
       "min_temp": -0.2,
       "max_erosion": -0.2,
-      "min_continentalness": 0.45,
-      "min_ridges": 0.5
+      "min_continentalness": -0.1,
+      "min_ridges": 0.35
     },
     { "type": "minecraft:biome" }
   ]

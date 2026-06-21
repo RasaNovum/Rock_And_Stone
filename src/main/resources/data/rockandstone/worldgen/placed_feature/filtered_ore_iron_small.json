@@ -12,17 +12,17 @@
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:uniform",
-        "max_inclusive": { "absolute": 72 },
+        "max_inclusive": { "absolute": 96 },
         "min_inclusive": { "absolute": -64 }
       }
     },
     { "type": "rockandstone:noise_filter",
       "max_humidity": 0.3,
-      "min_temp": 0.45,
-      "min_erosion": 0.15,
-      "min_continentalness": 0.2,
+      "min_temp": -0.2,
+      "min_erosion": 0.0,
+      "min_continentalness": -0.1,
       "min_ridges": -0.8,
-      "max_ridges": 0.3
+      "max_ridges": 0.7
     },
     { "type": "minecraft:biome" }
   ]

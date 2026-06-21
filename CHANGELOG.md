@@ -1,4 +1,4 @@
-# Rock and Stone 0.0.0 Changelog:
+# Rock and Stone 0.1.2 Changelog:
 
 ### Features:
 
@@ -8,9 +8,8 @@
 
 ### Changes:
 
-- None
+- updated noise filter values for coal upper, iron upper, iron small in accordance with testing observations
 
 ### Notes: 
 
-- placeholder mod name 
-- values may change, testing still needs to be done
+- placeholder mod name
