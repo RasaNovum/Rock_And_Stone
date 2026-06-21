@@ -3,13 +3,13 @@
 	"id": "rockandstone",
 	"version": "${version}",
 	"name": "Rock and Stone",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A worldgen mod that changes ore distribution to match a set of climate/environment values.",
 	"authors": [
-		"Me!"
+		"Rasa Novum"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://rasanovum.ca",
+		"sources": "https://github.com/RasaNovum/Rock_And_Stone"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/rock-and-stone/icon.png",
