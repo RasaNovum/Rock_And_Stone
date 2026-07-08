@@ -3,7 +3,7 @@
 	"id": "rockandstone",
 	"version": "${version}",
 	"name": "Rock and Stone",
-	"description": "A worldgen mod that changes ore distribution to match a set of climate/environment values.",
+	"description": "A world generation mod that changes ore distribution to match a set of climate/environment values.",
 	"authors": [
 		"Rasa Novum"
 	],
@@ -11,8 +11,8 @@
 		"homepage": "https://rasanovum.ca",
 		"sources": "https://github.com/RasaNovum/Rock_And_Stone"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/rock-and-stone/icon.png",
+	"license": "RSL-1.0",
+	"icon": "assets/rockandstone/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

@@ -1,0 +1,10 @@
+{
+  "criteria": {
+    "entered_zone": {
+      "trigger": "rockandstone:geological_hotspot",
+      "conditions": {
+        "ore_type": "filtered_ore_iron_small"
+      }
+    }
+  }
+}

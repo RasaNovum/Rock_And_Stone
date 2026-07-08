@@ -35,11 +35,13 @@ public class RockAndStone implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+
 	@Override
 	public void onInitialize() {
+		boolean doDebugGamerule = RockAndStoneConfig.doRockAndStoneDebug;
 		HOTSPOT_TRIGGER = CriteriaTriggers.register(new AdvancementTrigger());
 		// debug
-		if (RockAndStoneConfig.doRockAndStoneDebug) {
+		if (doDebugGamerule) {
 			CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 				OreScanner.register(dispatcher);
 			});
@@ -113,21 +115,20 @@ public class RockAndStone implements ModInitializer {
 							currentErosion >= bounds.minEro() && currentErosion <= bounds.maxEro() &&
 							currentPv >= bounds.minRid() && currentPv <= bounds.maxRid() &&
 							currentContinentalness >= bounds.minCon() && currentContinentalness <= bounds.maxCon();
-					/*
-					if (match) {
+
+					if (match && doDebugGamerule) {
 						System.out.println("SUCCESS: Conditions met for " + oreName);
 						HOTSPOT_TRIGGER.trigger(player, oreName);
-					} else if (oreName.equals("filtered_ore_iron_upper")) {
+					} else if (oreName.equals("filtered_ore_iron_upper") && doDebugGamerule) {
 						System.out.printf("DEBUG Iron: Temp: %.2f [%.2f/%.2f] | Ero: %.2f [%.2f/%.2f] | PV: %.2f [%.2f/%.2f]%n",
 								currentTemp, bounds.minTemp(), bounds.maxTemp(),
 								currentErosion, bounds.minEro(), bounds.maxEro(),
 								currentPv, bounds.minRid(), bounds.maxRid()
 						);
-					}
-					 */
-					if (match) {
+					} else if (match) {
 						HOTSPOT_TRIGGER.trigger(player, oreName);
 					}
+
 				});
 			}
 

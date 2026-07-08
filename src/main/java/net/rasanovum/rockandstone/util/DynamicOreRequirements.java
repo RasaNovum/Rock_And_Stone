@@ -69,5 +69,5 @@ public class DynamicOreRequirements {
         });
     }
 
-    public static record NoiseBounds(double minTemp, double maxTemp, double minHum, double maxHum, double minEro, double maxEro, double minRid, double maxRid, double minCon, double maxCon) {}
+    public record NoiseBounds(double minTemp, double maxTemp, double minHum, double maxHum, double minEro, double maxEro, double minRid, double maxRid, double minCon, double maxCon) {}
 }

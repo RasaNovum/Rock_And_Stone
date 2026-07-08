@@ -15,6 +15,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.NoiseRouter;
+import net.rasanovum.rockandstone.RockAndStoneConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,24 +34,25 @@ public class OreScanner {
                     DensityFunction.SinglePointContext contextPoint =
                             new DensityFunction.SinglePointContext(playerPos.getX(), playerPos.getY(), playerPos.getZ());
 
-                    double currentTemp = noiseRouter.temperature().compute(contextPoint);
-                    double currentHumidity = noiseRouter.vegetation().compute(contextPoint);
-                    double currentContinentalness = noiseRouter.continents().compute(contextPoint);
-                    double currentErosion = noiseRouter.erosion().compute(contextPoint);
-                    double weirdness = noiseRouter.ridges().compute(contextPoint);
-                    double currentPv = 1.0 - Math.abs(3.0 * Math.abs(weirdness) - 2.0);
+                    if (RockAndStoneConfig.doRockAndStoneDebug) {
+                        double currentTemp = noiseRouter.temperature().compute(contextPoint);
+                        double currentHumidity = noiseRouter.vegetation().compute(contextPoint);
+                        double currentContinentalness = noiseRouter.continents().compute(contextPoint);
+                        double currentErosion = noiseRouter.erosion().compute(contextPoint);
+                        double weirdness = noiseRouter.ridges().compute(contextPoint);
+                        double currentPv = 1.0 - Math.abs(3.0 * Math.abs(weirdness) - 2.0);
 
-                    // 2. Print the Data Readout explicitly right before the block scan text
-                    source.sendSystemMessage(Component.literal("§6--- REGIONAL NOISE FILTER ---"));
-                    source.sendSystemMessage(Component.literal(String.format(
-                            "§aCoords: §f[%d, %d, %d] §7| §aTemp: §f%.3f §7| §aHumid: §f%.3f",
-                            playerPos.getX(), playerPos.getY(), playerPos.getZ(), currentTemp, currentHumidity
-                    )));
-                    source.sendSystemMessage(Component.literal(String.format(
-                            "§aErosion: §f%.3f §7| §aContinentalness: §f%.3f §7| §aPV: §f%.3f",
-                            currentErosion, currentContinentalness, currentPv
-                    )));
-                    source.sendSystemMessage(Component.literal("§6---------------------------------------"));
+                        source.sendSystemMessage(Component.literal("§6--- NOISE FILTER VALUES ---"));
+                        source.sendSystemMessage(Component.literal(String.format(
+                                "§aCoords: §f[%d, %d, %d] §7| §aTemp: §f%.3f §7| §aHumid: §f%.3f",
+                                playerPos.getX(), playerPos.getY(), playerPos.getZ(), currentTemp, currentHumidity
+                        )));
+                        source.sendSystemMessage(Component.literal(String.format(
+                                "§aErosion: §f%.3f §7| §aContinentalness: §f%.3f §7| §aPV: §f%.3f",
+                                currentErosion, currentContinentalness, currentPv
+                        )));
+                        source.sendSystemMessage(Component.literal("§6---------------------------------------"));
+                    }
 
                     int radius = 16;
                     Map<Block, Integer> oreCounts = new HashMap<>();
