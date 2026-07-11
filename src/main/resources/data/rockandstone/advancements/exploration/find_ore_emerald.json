@@ -1,4 +1,14 @@
 {
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": { "item": "minecraft:emerald_ore" },
+    "title": { "text": "Emerald Vein Detected" },
+    "description": { "text": "You have entered an emerald-rich region." },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
   "criteria": {
     "entered_zone": {
       "trigger": "rockandstone:geological_hotspot",

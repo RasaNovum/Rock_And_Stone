@@ -1,4 +1,14 @@
 {
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": { "item": "minecraft:coal_ore" },
+    "title": { "text": "Coal Seam Detected" },
+    "description": { "text": "You have entered a lower coal-rich region." },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
   "criteria": {
     "entered_zone": {
       "trigger": "rockandstone:geological_hotspot",

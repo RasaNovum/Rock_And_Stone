@@ -1,8 +1,8 @@
 package net.rasanovum.rockandstone.util;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class DynamicOreRequirements {
@@ -43,30 +44,65 @@ public class DynamicOreRequirements {
     }
 
     public static void registerDataPackListener() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            ACTIVE_FILTERS.clear();
-            var registry = server.registryAccess().registryOrThrow(Registries.PLACED_FEATURE);
+    }
 
-            registry.entrySet().forEach(entry -> {
-                ResourceLocation id = entry.getKey().location();
 
-                if (id.getNamespace().equals(RockAndStone.MOD_ID)) {
-                    PlacedFeature feature = entry.getValue();
+    public static Optional<ResourceLocation> targetFeatureId(String filteredFeaturePath) {
+        if (!filteredFeaturePath.startsWith("filtered_")) {
+            return Optional.empty();
+        }
 
-                    for (PlacementModifier modifier : feature.placement()) {
-                        if (modifier instanceof NoiseFilterPlacementModifier filter) {
-                            ACTIVE_FILTERS.put(id.getPath(), new NoiseBounds(
-                                    filter.getMinTemp(), filter.getMaxTemp(),
-                                    filter.getMinHumidity(), filter.getMaxHumidity(),
-                                    filter.getMinErosion(), filter.getMaxErosion(),
-                                    filter.getMinRidges(), filter.getMaxRidges(),
-                                    filter.getMinContinentalness(), filter.getMaxContinentalness()
-                            ));
-                        }
+        String target = filteredFeaturePath.substring("filtered_".length());
+        String namespace = "minecraft";
+        String path = target;
+
+        if (target.contains("__")) {
+            String[] split = target.split("__", 2);
+            namespace = split[0];
+            path = split[1];
+        }
+
+        return Optional.ofNullable(ResourceLocation.tryBuild(namespace, path));
+    }
+
+    public static void loadActiveFilters(RegistryAccess registryAccess) {
+        ACTIVE_FILTERS.clear();
+        var registry = registryAccess.registryOrThrow(Registries.PLACED_FEATURE);
+
+        registry.entrySet().forEach(entry -> {
+            ResourceLocation id = entry.getKey().location();
+
+            if (!id.getNamespace().equals(RockAndStone.MOD_ID)) {
+                return;
+            }
+
+            Optional<ResourceLocation> targetId = targetFeatureId(id.getPath());
+            if (targetId.isEmpty()) {
+                return;
+            }
+
+            PlacedFeature feature = entry.getValue();
+            for (PlacementModifier modifier : feature.placement()) {
+                if (modifier instanceof NoiseFilterPlacementModifier filter) {
+                    ACTIVE_FILTERS.put(id.getPath(), new NoiseBounds(
+                            filter.getMinTemp(), filter.getMaxTemp(),
+                            filter.getMinHumidity(), filter.getMaxHumidity(),
+                            filter.getMinErosion(), filter.getMaxErosion(),
+                            filter.getMinRidges(), filter.getMaxRidges(),
+                            filter.getMinContinentalness(), filter.getMaxContinentalness()
+                    ));
+
+                    if (registry.containsKey(targetId.get())) {
+                        RockAndStone.LOGGER.info("Discovered filtered feature {} -> {}", id, targetId.get());
+                    } else {
+                        RockAndStone.LOGGER.warn("Filtered feature {} targets {}, but that placed feature is not registered", id, targetId.get());
                     }
+                    break;
                 }
-            });
+            }
         });
+
+        RockAndStone.LOGGER.info("Loaded {} filtered ore features from active datapacks", ACTIVE_FILTERS.size());
     }
 
     public record NoiseBounds(double minTemp, double maxTemp, double minHum, double maxHum, double minEro, double maxEro, double minRid, double maxRid, double minCon, double maxCon) {}

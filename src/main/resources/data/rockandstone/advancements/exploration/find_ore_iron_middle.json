@@ -1,4 +1,14 @@
 {
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": { "item": "minecraft:iron_ore" },
+    "title": { "text": "Iron Deposit Detected" },
+    "description": { "text": "You have entered a mid-level iron-rich region." },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
   "criteria": {
     "entered_zone": {
       "trigger": "rockandstone:geological_hotspot",

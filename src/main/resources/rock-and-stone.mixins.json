@@ -2,6 +2,9 @@
 	"required": true,
 	"package": "net.rasanovum.rockandstone.mixin",
 	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"ServerWorldgenMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

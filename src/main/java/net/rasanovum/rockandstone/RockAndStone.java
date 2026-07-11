@@ -1,12 +1,14 @@
 package net.rasanovum.rockandstone;
 
-import net.fabricmc.api.ModInitializer;
+import eu.midnightdust.lib.config.MidnightConfig;
 
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -21,10 +23,12 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+
 import net.rasanovum.rockandstone.util.AdvancementTrigger;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
 import net.rasanovum.rockandstone.util.OreScanner;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +42,11 @@ public class RockAndStone implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		boolean doDebugGamerule = RockAndStoneConfig.doRockAndStoneDebug;
+		MidnightConfig.init(MOD_ID, RockAndStoneConfig.class);
+		boolean doDebugConfig = RockAndStoneConfig.doRockAndStoneDebug;
 		HOTSPOT_TRIGGER = CriteriaTriggers.register(new AdvancementTrigger());
 		// debug
-		if (doDebugGamerule) {
+		if (doDebugConfig) {
 			CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 				OreScanner.register(dispatcher);
 			});
@@ -54,23 +59,22 @@ public class RockAndStone implements ModInitializer {
 		);
 
 		DynamicOreRequirements.registerDataPackListener();
+		LOGGER.info("Datapack filtered-ore support is enabled; filters will be discovered when a world starts.");
 
 		BiomeModifications.create(new ResourceLocation(MOD_ID, "dynamic_ore_removal"))
-				.add(ModificationPhase.REMOVALS,
+				.add(ModificationPhase.POST_PROCESSING,
 						BiomeSelectors.foundInOverworld(),
 						context -> {
 							for (String customOrePath : DynamicOreRequirements.ACTIVE_FILTERS.keySet()) {
-								String vanillaPath = customOrePath.replace("filtered_", "");
-								ResourceLocation vanillaLocation = new ResourceLocation("minecraft", vanillaPath);
-								ResourceKey<PlacedFeature> vanillaKey = ResourceKey.create(Registries.PLACED_FEATURE, vanillaLocation);
+								ResourceLocation targetLocation = DynamicOreRequirements.targetFeatureId(customOrePath).orElseThrow();
+								ResourceKey<PlacedFeature> targetKey = ResourceKey.create(Registries.PLACED_FEATURE, targetLocation);
 
-								try {
-									context.getGenerationSettings().removeFeature(
-											GenerationStep.Decoration.UNDERGROUND_ORES,
-											vanillaKey
-									);
-								} catch (IllegalArgumentException e) {
-									LOGGER.warn("RockAndStone: Tried to remove non-existent vanilla feature: " + vanillaLocation);
+								boolean removed = context.getGenerationSettings().removeFeature(
+										GenerationStep.Decoration.UNDERGROUND_ORES,
+										targetKey
+								);
+								if (removed) {
+									LOGGER.debug("Removed {} for filtered replacement {}", targetLocation, customOrePath);
 								}
 							}
 						}
@@ -116,11 +120,11 @@ public class RockAndStone implements ModInitializer {
 							currentPv >= bounds.minRid() && currentPv <= bounds.maxRid() &&
 							currentContinentalness >= bounds.minCon() && currentContinentalness <= bounds.maxCon();
 
-					if (match && doDebugGamerule) {
-						System.out.println("SUCCESS: Conditions met for " + oreName);
+					if (match && doDebugConfig) {
+						System.out.println("DEBUG: Conditions met for " + oreName);
 						HOTSPOT_TRIGGER.trigger(player, oreName);
-					} else if (oreName.equals("filtered_ore_iron_upper") && doDebugGamerule) {
-						System.out.printf("DEBUG Iron: Temp: %.2f [%.2f/%.2f] | Ero: %.2f [%.2f/%.2f] | PV: %.2f [%.2f/%.2f]%n",
+					} else if (doDebugConfig) {
+						System.out.printf("DEBUG: No conditions met! Temp: %.2f [%.2f/%.2f] | Ero: %.2f [%.2f/%.2f] | PV: %.2f [%.2f/%.2f]%n",
 								currentTemp, bounds.minTemp(), bounds.maxTemp(),
 								currentErosion, bounds.minEro(), bounds.maxEro(),
 								currentPv, bounds.minRid(), bounds.maxRid()
