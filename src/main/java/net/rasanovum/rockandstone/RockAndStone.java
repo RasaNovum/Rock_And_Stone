@@ -45,12 +45,9 @@ public class RockAndStone implements ModInitializer {
 		MidnightConfig.init(MOD_ID, RockAndStoneConfig.class);
 		boolean doDebugConfig = RockAndStoneConfig.doRockAndStoneDebug;
 		HOTSPOT_TRIGGER = CriteriaTriggers.register(new AdvancementTrigger());
-		// debug
-		if (doDebugConfig) {
-			CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-				OreScanner.register(dispatcher);
-			});
-		}
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+					OreScanner.register(dispatcher);
+				});
 
 		NOISE_FILTER_TYPE = Registry.register(
 				BuiltInRegistries.PLACEMENT_MODIFIER_TYPE,

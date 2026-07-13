@@ -42,7 +42,7 @@ public class OreScanner {
                         double weirdness = noiseRouter.ridges().compute(contextPoint);
                         double currentPv = 1.0 - Math.abs(3.0 * Math.abs(weirdness) - 2.0);
 
-                        source.sendSystemMessage(Component.literal("§6--- NOISE FILTER VALUES ---"));
+                        source.sendSystemMessage(Component.literal("§6--- NOISE ROUTER VALUES ---"));
                         source.sendSystemMessage(Component.literal(String.format(
                                 "§aCoords: §f[%d, %d, %d] §7| §aTemp: §f%.3f §7| §aHumid: §f%.3f",
                                 playerPos.getX(), playerPos.getY(), playerPos.getZ(), currentTemp, currentHumidity
