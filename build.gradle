@@ -44,6 +44,10 @@ processResources {
 	def version = project.version
 	inputs.property "version", version
 
+	from("templates/silentAdvancementsForHandbook") {
+		into("resourcepacks/silent_advancements")
+	}
+
 	filesMatching("fabric.mod.json") {
 		expand "version": version
 	}

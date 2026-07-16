@@ -1,4 +1,4 @@
-# Rock and Stone 0.3.4 Changelog:
+# Rock and Stone 0.5.0 Changelog:
 
 ### Features:
 
@@ -11,6 +11,8 @@
 ### Changes:
 
 - updated datapack getting to fix incompatibility with modded ore replacement
+- added support for disabling ore replacement via config, that way you can compare generation without relaunching the game.
+- added the `doSilentAdvancements` config option to automatically enable the built-in silent advancements datapack.
 
 ### Notes:
 
