@@ -3,8 +3,13 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version = "${project.mod_version}+${project.minecraft_version}-fabric"
 group = project.maven_group
+def targetJavaVersion = Integer.parseInt(project.java_version as String)
+
+base {
+	archivesName = 'rockandstone'
+}
 
 repositories {
 	maven {
@@ -17,7 +22,7 @@ repositories {
 	maven { url "https://jitpack.io" }
 }
 
-loom {
+	loom {
 	splitEnvironmentSourceSets()
 
 	mods {
@@ -29,32 +34,83 @@ loom {
 
 }
 
+// The NeoForge target has its own loader entrypoint and worldgen adapter.
+sourceSets.main.java.exclude '**/loaders/neoforge/**'
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modImplementation "maven.modrinth:midnightlib:1.4.1-fabric"
-	include "maven.modrinth:midnightlib:1.4.1-fabric"
+	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
+	include "maven.modrinth:midnightlib:${project.midnightlib_version}"
 	
 }
 
 processResources {
-	def version = project.version
-	inputs.property "version", version
+	def modVersion = project.version
+	def minecraftVersion = project.minecraft_version
+	def fabricLoaderMinVersion = project.fabric_loader_min_version
+	def resourcePackFormat = project.resource_pack_format
+	inputs.properties "version": modVersion, "minecraft_version": minecraftVersion, "fabric_loader_min_version": fabricLoaderMinVersion, "resource_pack_format": resourcePackFormat
 
-	from("templates/silentAdvancementsForHandbook") {
+	from(rootProject.file("templates/silentAdvancementsForHandbook")) {
 		into("resourcepacks/silent_advancements")
 	}
 
 	filesMatching("fabric.mod.json") {
-		expand "version": version
+		expand "version": modVersion, "minecraft_version": minecraftVersion, "fabric_loader_min_version": fabricLoaderMinVersion, "java_version": project.java_version
+	}
+
+	exclude "META-INF/neoforge.mods.toml"
+	exclude "rockandstone.mixins.json"
+
+	filesMatching("**/pack.mcmeta") {
+		filter { line ->
+			line.replace('"pack_format": 15', "\"pack_format\": ${resourcePackFormat}")
+		}
 	}
 }
 
+tasks.register("prepareTargetTemplates", Sync) {
+	def dataPackFormat = project.data_pack_format
+	inputs.property("dataPackFormat", dataPackFormat)
+	into(layout.buildDirectory.dir("templates"))
+
+	from(rootProject.file("templates/data")) {
+		into("data")
+		filesMatching("pack.mcmeta") {
+			filter { line ->
+				line.replace('"pack_format": 15', "\"pack_format\": ${dataPackFormat}")
+			}
+		}
+	}
+
+	from(rootProject.file("templates/testDataPack")) {
+		into("testDataPack")
+		filesMatching("pack.mcmeta") {
+			filter { line ->
+				line.replace('"pack_format": 15', "\"pack_format\": ${dataPackFormat}")
+			}
+		}
+	}
+}
+
+tasks.named("build") {
+	dependsOn("prepareTargetTemplates")
+}
+
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = targetJavaVersion
+}
+
+// Loom's run tasks inherit the Gradle JVM unless a launcher is specified.
+// Pin them to the target's Java version so a newer system JDK cannot break Mixin.
+tasks.withType(JavaExec).configureEach {
+	javaLauncher = javaToolchains.launcherFor {
+		languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+	}
 }
 
 java {
@@ -63,15 +119,15 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.toVersion(targetJavaVersion)
+	targetCompatibility = JavaVersion.toVersion(targetJavaVersion)
 }
 
 jar {
 	def projectName = project.name
 	inputs.property "projectName", projectName
 
-	from("LICENSE") {
+	from("LICENSE.md") {
 		rename { "${it}_$projectName"}
 	}
 }

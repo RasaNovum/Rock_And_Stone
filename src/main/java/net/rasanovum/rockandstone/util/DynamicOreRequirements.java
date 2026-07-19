@@ -3,10 +3,8 @@ package net.rasanovum.rockandstone.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.PreparableReloadListener.PreparationBarrier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -25,31 +23,14 @@ import java.util.concurrent.Executor;
 
 public class DynamicOreRequirements {
     private static final String PLACED_FEATURE_DIRECTORY = "worldgen/placed_feature";
-    private static final ResourceLocation RELOAD_LISTENER_ID = new ResourceLocation(RockAndStone.MOD_ID, "dynamic_ore_requirements");
     private static volatile Map<String, NoiseBounds> activeFilters = Map.of();
 
-    public static void registerDataPackListener() {
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new IdentifiableResourceReloadListener() {
-            @Override
-            public ResourceLocation getFabricId() {
-                return RELOAD_LISTENER_ID;
-            }
-
-            @Override
-            public CompletableFuture<Void> reload(
-                    PreparationBarrier preparationBarrier,
-                    ResourceManager resourceManager,
-                    ProfilerFiller preparationsProfiler,
-                    ProfilerFiller reloadProfiler,
-                    Executor backgroundExecutor,
-                    Executor gameExecutor
-            ) {
-                return CompletableFuture
-                        .supplyAsync(() -> readActiveFilters(resourceManager), backgroundExecutor)
-                        .thenCompose(preparationBarrier::wait)
-                        .thenAcceptAsync(DynamicOreRequirements::setActiveFilters, gameExecutor);
-            }
-        });
+    public static PreparableReloadListener createReloadListener() {
+        return (preparationBarrier, resourceManager, preparationsProfiler, reloadProfiler,
+                backgroundExecutor, gameExecutor) -> CompletableFuture
+                .supplyAsync(() -> readActiveFilters(resourceManager), backgroundExecutor)
+                .thenCompose(preparationBarrier::wait)
+                .thenAcceptAsync(DynamicOreRequirements::setActiveFilters, gameExecutor);
     }
 
     public static Map<String, NoiseBounds> activeFilters() {
