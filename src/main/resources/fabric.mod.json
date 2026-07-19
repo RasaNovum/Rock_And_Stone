@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.rasanovum.rockandstone.RockAndStone"
+			"net.rasanovum.rockandstone.loaders.fabric.FabricMain"
 		]
 	},
 	"depends": {
-		"fabricloader": ">=0.17.2",
-		"minecraft": "~1.20.1",
-		"java": ">=17",
+		"fabricloader": ">=${fabric_loader_min_version}",
+		"minecraft": "~${minecraft_version}",
+		"java": ">=${java_version}",
 		"fabric-api": "*"
 	}
 }

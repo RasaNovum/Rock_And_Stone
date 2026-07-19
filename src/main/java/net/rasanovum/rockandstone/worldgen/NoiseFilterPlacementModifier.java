@@ -1,6 +1,7 @@
 package net.rasanovum.rockandstone.worldgen;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerChunkCache;
@@ -22,7 +23,7 @@ public class NoiseFilterPlacementModifier extends PlacementModifier {
     private final float minErosion, maxErosion;
     private final float minContinentalness, maxContinentalness;
     private final float minRidges, maxRidges;
-    public static final Codec<NoiseFilterPlacementModifier> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<NoiseFilterPlacementModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Codec.FLOAT.fieldOf("min_humidity").orElse(-2.0f).forGetter(m -> m.minHumidity),
                     Codec.FLOAT.fieldOf("max_humidity").orElse(2.0f).forGetter(m -> m.maxHumidity),
@@ -36,6 +37,15 @@ public class NoiseFilterPlacementModifier extends PlacementModifier {
                     Codec.FLOAT.fieldOf("max_ridges").orElse(2.0f).forGetter(m -> m.maxRidges)
             ).apply(instance, NoiseFilterPlacementModifier::new)
     );
+    public static final Codec<NoiseFilterPlacementModifier> CODEC = MAP_CODEC.codec();
+
+    public static PlacementModifierType<NoiseFilterPlacementModifier> createType() {
+        //? if <1.21 {
+        /*return () -> CODEC;
+        *///?} else {
+        return () -> MAP_CODEC;
+        //?}
+    }
 
     public NoiseFilterPlacementModifier(float minH, float maxH, float minT, float maxT, float minE, float maxE, float minC, float maxC, float minPV, float maxPV) {
         this.minHumidity = minH;
