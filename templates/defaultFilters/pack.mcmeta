@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 15,
+    "description": "The values that ship with the mod, use these as a reference for editing whatever ores you want. Simply change the min/max values in the filtered_ore file you want to edit."
+  }
+}

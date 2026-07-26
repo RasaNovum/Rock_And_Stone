@@ -1,0 +1,13 @@
+{
+  "feature": "minecraft:ore_lapis_buried",
+  "placement": [
+    { "type": "minecraft:count", "count": 4 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "min_inclusive": { "absolute": -64 }, "max_inclusive": { "absolute": 32 } } },
+    {
+      "type": "rockandstone:noise_filter",
+      "max_erosion": 0.0
+    },
+    { "type": "minecraft:biome" }
+  ]
+}
