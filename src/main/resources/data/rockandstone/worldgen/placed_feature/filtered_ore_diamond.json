@@ -1,0 +1,22 @@
+{
+  "feature": "minecraft:ore_diamond_small",
+  "placement": [
+    { "type": "minecraft:count", "count": 7 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "max_inclusive": { "above_bottom": 80 }, "min_inclusive": { "above_bottom": -80 } } },
+    {
+      "type": "rockandstone:noise_filter",
+      "min_humidity": -2.0,
+      "max_humidity": 2.0,
+      "min_temp": -2.0,
+      "max_temp": 2.0,
+      "min_erosion": -2.0,
+      "max_erosion": 2.0,
+      "min_continentalness": -2.0,
+      "max_continentalness": 2.0,
+      "min_ridges": -2.0,
+      "max_ridges": 2.0
+    },
+    { "type": "minecraft:biome" }
+  ]
+}

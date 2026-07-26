@@ -8,6 +8,7 @@
 - Single chunk and radius ore scan commands to check distribution of ores.
 - Advancements on discovering conditions in which certain ores spawn with an optional datapack to change the advancements to have no display properites, such that they are simply a background utility.
 - Noise filter values stored entirely in json files (in worldgen/placed_feature), replace values with whatever values suit the worldgen you are using and/or restrictions you want.
+- Filters can be removed by setting the min/max values to an unrestricted `-2.0` to `2.0` noise bounds, preserving vanilla placement.
 - Multiversion support through Stonecutter
 
 ### Changes:
