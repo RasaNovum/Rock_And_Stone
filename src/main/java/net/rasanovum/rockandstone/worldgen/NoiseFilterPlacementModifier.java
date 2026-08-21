@@ -77,27 +77,44 @@ public class NoiseFilterPlacementModifier extends PlacementModifier {
 
         if (level.getChunkSource() instanceof ServerChunkCache chunkCache) {
             NoiseRouter noiseRouter = chunkCache.randomState().router();
-            DensityFunction.SinglePointContext contextPoint = new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ());
-
-            double temp = noiseRouter.temperature().compute(contextPoint);
-            double humid = noiseRouter.vegetation().compute(contextPoint);
-            double continental = noiseRouter.continents().compute(contextPoint);
-            double erosionVal = noiseRouter.erosion().compute(contextPoint);
-            double weirdness = noiseRouter.ridges().compute(contextPoint);
-            double pv = 1.0 - Math.abs(3.0 * Math.abs(weirdness) - 2.0);
-
-            boolean isCorrectRegion =
-                    temp >= minTemp && temp <= maxTemp &&
-                            humid >= minHumidity && humid <= maxHumidity &&
-                            erosionVal >= minErosion && erosionVal <= maxErosion &&
-                            continental >= minContinentalness && continental <= maxContinentalness &&
-                            pv >= minRidges && pv <= maxRidges;
+            boolean isCorrectRegion = matches(noiseRouter, pos,
+                    minTemp, maxTemp,
+                    minHumidity, maxHumidity,
+                    minErosion, maxErosion,
+                    minContinentalness, maxContinentalness,
+                    minRidges, maxRidges);
 
             if (isCorrectRegion) {
                 return Stream.of(pos);
             }
         }
         return Stream.empty();
+    }
+
+    public static boolean matches(
+            NoiseRouter noiseRouter,
+            BlockPos pos,
+            double minTemp, double maxTemp,
+            double minHumidity, double maxHumidity,
+            double minErosion, double maxErosion,
+            double minContinentalness, double maxContinentalness,
+            double minRidges, double maxRidges
+    ) {
+        DensityFunction.SinglePointContext contextPoint =
+                new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ());
+
+        double temp = noiseRouter.temperature().compute(contextPoint);
+        double humid = noiseRouter.vegetation().compute(contextPoint);
+        double continental = noiseRouter.continents().compute(contextPoint);
+        double erosionVal = noiseRouter.erosion().compute(contextPoint);
+        double weirdness = noiseRouter.ridges().compute(contextPoint);
+        double pv = 1.0 - Math.abs(3.0 * Math.abs(weirdness) - 2.0);
+
+        return temp >= minTemp && temp <= maxTemp
+                && humid >= minHumidity && humid <= maxHumidity
+                && erosionVal >= minErosion && erosionVal <= maxErosion
+                && continental >= minContinentalness && continental <= maxContinentalness
+                && pv >= minRidges && pv <= maxRidges;
     }
 
 

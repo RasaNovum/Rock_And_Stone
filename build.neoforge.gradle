@@ -59,7 +59,7 @@ processResources {
 			'neoforge_version': neoforgeVersion, 'data_pack_format': dataPackFormat
 
 	from(rootProject.file('templates/silentAdvancementsForHandbook')) {
-		into('rockandstone/datapacks/silent_advancements')
+		into('datapacks/silent_advancements')
 	}
 
 	filesMatching('META-INF/neoforge.mods.toml') {

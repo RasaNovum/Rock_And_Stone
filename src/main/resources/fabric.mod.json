@@ -13,6 +13,9 @@
 	},
 	"license": "RSL-1.0",
 	"icon": "assets/rockandstone/icon.png",
+	"mixins": [
+		"rockandstone.compat.mixins.json"
+	],
 	"environment": "*",
 	"entrypoints": {
 		"main": [

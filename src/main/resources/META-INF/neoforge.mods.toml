@@ -15,6 +15,9 @@ logoFile = "assets/rockandstone/icon.png"
 [[mixins]]
 config = "rockandstone.mixins.json"
 
+[[mixins]]
+config = "rockandstone.compat.mixins.json"
+
 [[dependencies.rockandstone]]
 modId = "neoforge"
 type = "required"
