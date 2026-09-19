@@ -7,6 +7,7 @@ issueTrackerURL = "https://github.com/RasaNovum/Rock_And_Stone/issues"
 modId = "rockandstone"
 version = "${version}"
 displayName = "Rock and Stone"
+displayTest = "IGNORE_SERVER_VERSION"
 description = '''A world generation mod that changes ore distribution to match a set of climate/environment values.'''
 authors = "Rasa Novum"
 displayURL = "https://rasanovum.ca"

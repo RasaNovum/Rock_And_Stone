@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 40
+      "count": 28
     },
     {
       "type": "minecraft:in_square"
@@ -17,12 +17,12 @@
       }
     },
     { "type": "rockandstone:noise_filter",
-      "max_humidity": 0.3,
-      "min_temp": -0.45,
-      "min_erosion": 0.0,
-      "min_continentalness": -0.1,
+      "max_humidity": 0.1,
+      "min_temp": -0.15,
+      "min_erosion": 0.05,
+      "min_continentalness": 0.03,
       "min_ridges": -0.8,
-      "max_ridges": 0.7
+      "max_ridges": 0.4
     },
     { "type": "minecraft:biome" }
   ]

@@ -9,6 +9,8 @@ Rock n Stone is a mod that changes ore distribution to follow individual sets of
 
 Fabric builds are provided for Minecraft 1.20.1 and 1.21.1, with a NeoForge build for Minecraft 1.21.1.
 
+On dedicated servers, Rock n Stone is required on the server and optional on connecting clients. Install it on the client for singleplayer. Optional content mods that register blocks used by world generation, such as Surface Samples, still need to be installed wherever those blocks must exist.
+
 Each target build also writes version-correct datapack templates to
 `versions/<target>/build/templates/`.
 

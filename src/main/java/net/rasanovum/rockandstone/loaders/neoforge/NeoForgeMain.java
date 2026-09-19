@@ -16,15 +16,17 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.rasanovum.rockandstone.RockAndStone;
 import net.rasanovum.rockandstone.RockAndStoneConfig;
+import net.rasanovum.rockandstone.loaders.neoforge.worldgen.SurfaceSampleFeature;
 import net.rasanovum.rockandstone.util.AdvancementTrigger;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
 import net.rasanovum.rockandstone.util.OreScanner;
 import net.rasanovum.rockandstone.util.VersionUtils;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
-import net.rasanovum.rockandstone.loaders.neoforge.worldgen.SurfaceSampleFeature;
 
 @Mod(RockAndStone.MOD_ID)
 public final class NeoForgeMain {
+    private static boolean initialized;
+
     public NeoForgeMain(IEventBus modEventBus) {
         modEventBus.addListener(NeoForgeMain::register);
         modEventBus.addListener(NeoForgeMain::addPackFinders);
@@ -32,11 +34,11 @@ public final class NeoForgeMain {
         NeoForge.EVENT_BUS.addListener(NeoForgeMain::addReloadListener);
         NeoForge.EVENT_BUS.addListener(NeoForgeMain::registerCommands);
         NeoForge.EVENT_BUS.addListener(NeoForgeMain::onServerTick);
-
-        RockAndStone.initialize();
     }
 
     private static void register(RegisterEvent event) {
+        initialize();
+
         if (event.getRegistryKey().equals(BuiltInRegistries.TRIGGER_TYPES.key())) {
             event.register(BuiltInRegistries.TRIGGER_TYPES.key(),
                     VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, "geological_hotspot"),
@@ -62,6 +64,13 @@ public final class NeoForgeMain {
             event.register(BuiltInRegistries.FEATURE.key(),
                     VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, "surface_samples"),
                     SurfaceSampleFeature::new);
+        }
+    }
+
+    private static synchronized void initialize() {
+        if (!initialized) {
+            RockAndStone.initialize();
+            initialized = true;
         }
     }
 

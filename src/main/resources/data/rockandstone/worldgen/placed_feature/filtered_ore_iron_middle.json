@@ -12,7 +12,7 @@
       }
     },
     { "type": "rockandstone:noise_filter",
-      "max_humidity": 0.3,
+      "max_humidity": 0.1,
       "min_temp": 0.45,
       "min_erosion": 0.15,
       "min_continentalness": 0.03,

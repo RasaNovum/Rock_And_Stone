@@ -1,4 +1,4 @@
-# Rock and Stone 0.6.1-d-4 Changelog:
+# Rock and Stone 0.7.0 Changelog:
 
 ## Changes:
 

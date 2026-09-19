@@ -62,13 +62,23 @@ public final class FabricMain implements ModInitializer {
                                 ResourceKey<PlacedFeature> targetKey =
                                         ResourceKey.create(Registries.PLACED_FEATURE, targetLocation);
 
-                                boolean removed = context.getGenerationSettings().removeFeature(
-                                        GenerationStep.Decoration.UNDERGROUND_ORES,
-                                        targetKey
-                                );
-                                if (removed) {
-                                    RockAndStone.LOGGER.debug("Removed {} and replaced with {}",
-                                            targetLocation, customOrePath);
+                                try {
+                                    boolean removed = context.getGenerationSettings().removeFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            targetKey
+                                    );
+                                    if (removed) {
+                                        RockAndStone.LOGGER.debug("Removed {} and replaced with {}",
+                                                targetLocation, customOrePath);
+                                    }
+                                } catch (IllegalArgumentException exception) {
+                                    if (RockAndStoneConfig.doRockAndStoneDebug) {
+                                        RockAndStone.LOGGER.debug(
+                                                "No registered target {}; retaining existing generation and adding {}",
+                                                targetLocation,
+                                                customOrePath
+                                        );
+                                    }
                                 }
                             }
                         }
