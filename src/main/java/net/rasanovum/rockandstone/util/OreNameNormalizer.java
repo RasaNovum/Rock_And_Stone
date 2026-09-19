@@ -23,7 +23,9 @@ public final class OreNameNormalizer {
         if (normalized.endsWith("_ore")) {
             normalized = normalized.substring(0, normalized.length() - "_ore".length());
         }
-        for (String suffix : new String[]{"_small", "_large", "_buried", "_upper", "_lower", "_middle"}) {
+        for (String suffix : new String[]{
+                "_small", "_large", "_buried", "_upper", "_lower", "_middle", "_placer"
+        }) {
             if (normalized.endsWith(suffix)) {
                 normalized = normalized.substring(0, normalized.length() - suffix.length());
                 break;

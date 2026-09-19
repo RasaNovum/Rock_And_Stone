@@ -6,7 +6,8 @@
     { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "min_inclusive": { "absolute": -64 }, "max_inclusive": { "absolute": 32 } } },
     {
       "type": "rockandstone:noise_filter",
-      "max_erosion": 0.0
+      "max_erosion": 0.2,
+      "min_ridges": -0.2
     },
     { "type": "minecraft:biome" }
   ]

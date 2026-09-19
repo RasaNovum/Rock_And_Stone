@@ -21,10 +21,9 @@
       }
     },
     { "type": "rockandstone:noise_filter",
-      "min_temp": -0.2,
-      "max_erosion": -0.2,
-      "min_continentalness": -0.1,
-      "min_ridges": 0.35
+      "max_erosion": -0.2225,
+      "min_continentalness": 0.03,
+      "min_ridges": 0.2
     },
     { "type": "minecraft:biome" }
   ]

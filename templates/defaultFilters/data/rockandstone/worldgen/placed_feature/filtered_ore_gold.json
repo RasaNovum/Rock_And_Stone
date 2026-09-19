@@ -9,7 +9,7 @@
       "min_temp": 0.1,
       "max_humidity": 0.2,
       "max_erosion": 0.1,
-      "min_ridges": 0.6
+      "min_ridges": 0.4
     },
     { "type": "minecraft:biome" }
   ]

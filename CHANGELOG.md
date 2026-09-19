@@ -1,9 +1,9 @@
-# Rock and Stone 0.6.1-d-3 Changelog:
+# Rock and Stone 0.6.1-d-4 Changelog:
 
 ## Changes:
 
-- Added optional Surface Samples world generation using the same active terrain filters as each ore.
-  - Added a `surfaceSampleFrequency` config value from `0.0` to `1.0`, defaulting to `0.05`.
+- Rebalanced the default coal, iron, copper, gold, and lapis terrain filters.
+- Added an additive gold placer for high-erosion inland terrain.
 
 ### Features:
 
@@ -12,16 +12,8 @@
 - Single chunk and radius ore scan commands to check distribution of ores.
 - Advancements on discovering conditions in which certain ores spawn with an optional datapack to change the advancements to have no display properites, such that they are simply a background utility.
 - Noise filter values stored entirely in json files (in worldgen/placed_feature), replace values with whatever values suit the worldgen you are using and/or restrictions you want.
-- Filters can be removed by setting the min/max values to an unrestricted `-2.0` to `2.0` noise bounds, preserving vanilla placement.
+- Filters can be made effectively unrestricted by using sufficiently wide min/max bounds such as `-8.0` to `8.0`.
 - Multiversion support through Stonecutter
-
-### Changes:
-
-- updated datapack getting to fix incompatibility with modded ore replacement
-- added support for disabling ore replacement via config, that way you can compare generation without relaunching the game.
-- added the `doSilentAdvancements` config option to automatically enable the built-in silent advancements datapack.
-- updated lang file to feature
-- Added Stonecutter builds for Fabric and NeoForge 1.21.1
 
 ### Notes:
 

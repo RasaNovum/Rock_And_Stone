@@ -3,10 +3,12 @@
   "placement": [
     { "type": "minecraft:count", "count": 4 },
     { "type": "minecraft:in_square" },
-    { "type": "minecraft:height_range", "height": { "type": "minecraft:uniform", "min_inclusive": { "absolute": -64 }, "max_inclusive": { "absolute": 32 } } },
+    { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "min_inclusive": { "absolute": -32 }, "max_inclusive": { "absolute": 128 } } },
     {
       "type": "rockandstone:noise_filter",
-      "max_erosion": 0.0
+      "max_erosion": 0.05,
+      "min_continentalness": 0.03,
+      "min_ridges": 0.2
     },
     { "type": "minecraft:biome" }
   ]

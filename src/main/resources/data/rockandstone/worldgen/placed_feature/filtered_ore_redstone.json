@@ -6,16 +6,16 @@
     { "type": "minecraft:height_range", "height": { "type": "minecraft:uniform", "max_inclusive": { "absolute": 15 }, "min_inclusive": { "above_bottom": 0 } } },
     {
       "type": "rockandstone:noise_filter",
-      "min_humidity": -2.0,
-      "max_humidity": 2.0,
-      "min_temp": -2.0,
-      "max_temp": 2.0,
-      "min_erosion": -2.0,
-      "max_erosion": 2.0,
-      "min_continentalness": -2.0,
-      "max_continentalness": 2.0,
-      "min_ridges": -2.0,
-      "max_ridges": 2.0
+      "min_humidity": -8.0,
+      "max_humidity": 8.0,
+      "min_temp": -8.0,
+      "max_temp": 8.0,
+      "min_erosion": -8.0,
+      "max_erosion": 8.0,
+      "min_continentalness": -8.0,
+      "max_continentalness": 8.0,
+      "min_ridges": -8.0,
+      "max_ridges": 8.0
     },
     { "type": "minecraft:biome" }
   ]
