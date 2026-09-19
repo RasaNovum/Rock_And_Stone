@@ -1,0 +1,8 @@
+{
+  "feature": "rockandstone:surface_samples",
+  "placement": [
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:heightmap", "heightmap": "OCEAN_FLOOR_WG" },
+    { "type": "minecraft:biome" }
+  ]
+}

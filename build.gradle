@@ -65,6 +65,8 @@ processResources {
 
 	exclude "META-INF/neoforge.mods.toml"
 	exclude "rockandstone.mixins.json"
+	exclude "data/rockandstone/worldgen/configured_feature/surface_samples.json"
+	exclude "data/rockandstone/worldgen/placed_feature/surface_samples.json"
 
 	filesMatching("**/pack.mcmeta") {
 		filter { line ->

@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
+import net.neoforged.fml.ModList;
 import net.rasanovum.rockandstone.RockAndStone;
 import net.rasanovum.rockandstone.RockAndStoneConfig;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
@@ -40,41 +41,64 @@ public abstract class ModifiableBiomeInfoMixin {
             net.minecraft.core.RegistryAccess registryAccess,
             CallbackInfoReturnable<Boolean> callbackInfo
     ) {
-        if (!RockAndStoneConfig.doOreReplacement || !biome.is(BiomeTags.IS_OVERWORLD) || modifiedBiomeInfo == null) {
+        if (!biome.is(BiomeTags.IS_OVERWORLD) || modifiedBiomeInfo == null) {
             return;
         }
 
         Registry<PlacedFeature> placedFeatures = registryAccess.registryOrThrow(Registries.PLACED_FEATURE);
-        Map<String, DynamicOreRequirements.NoiseBounds> filters = discoverFilters(placedFeatures);
-        if (filters.isEmpty()) {
-            return;
-        }
-
         ModifiableBiomeInfo.BiomeInfo.Builder builder =
                 ModifiableBiomeInfo.BiomeInfo.Builder.copyOf(modifiedBiomeInfo);
-        List<Holder<PlacedFeature>> undergroundOres = builder.getGenerationSettings()
-                .getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
+        boolean changed = false;
 
-        for (String customOrePath : filters.keySet()) {
-            ResourceLocation targetLocation = DynamicOreRequirements.targetFeatureId(customOrePath).orElseThrow();
-            ResourceKey<PlacedFeature> targetKey = ResourceKey.create(Registries.PLACED_FEATURE, targetLocation);
-            boolean removed = undergroundOres.removeIf(holder -> holder.unwrapKey().map(targetKey::equals).orElse(false));
-            if (removed) {
-                RockAndStone.LOGGER.debug("Removed {} and replaced with {}", targetLocation, customOrePath);
-            }
+        if (RockAndStoneConfig.doOreReplacement) {
+            Map<String, DynamicOreRequirements.NoiseBounds> filters = discoverFilters(placedFeatures);
+            List<Holder<PlacedFeature>> undergroundOres = builder.getGenerationSettings()
+                    .getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
 
-            ResourceLocation customLocation = VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, customOrePath);
-            placedFeatures.getHolder(customLocation).ifPresent(customHolder -> {
+            for (String customOrePath : filters.keySet()) {
+                ResourceLocation targetLocation = DynamicOreRequirements.targetFeatureId(customOrePath).orElseThrow();
+                ResourceKey<PlacedFeature> targetKey = ResourceKey.create(Registries.PLACED_FEATURE, targetLocation);
+                boolean removed = undergroundOres.removeIf(
+                        holder -> holder.unwrapKey().map(targetKey::equals).orElse(false)
+                );
+                if (removed) {
+                    changed = true;
+                    RockAndStone.LOGGER.debug("Removed {} and replaced with {}", targetLocation, customOrePath);
+                }
+
+                ResourceLocation customLocation = VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, customOrePath);
+                Holder<PlacedFeature> customHolder = placedFeatures.getHolder(customLocation).orElse(null);
+                if (customHolder == null) {
+                    continue;
+                }
                 if (!undergroundOres.contains(customHolder)) {
                     builder.getGenerationSettings().addFeature(
                             GenerationStep.Decoration.UNDERGROUND_ORES,
                             customHolder
                     );
+                    changed = true;
                 }
-            });
+            }
         }
 
-        modifiedBiomeInfo = builder.build();
+        if (ModList.get().isLoaded("surfacesamples")) {
+            ResourceLocation surfaceSamplesLocation =
+                    VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, "surface_samples");
+            Holder<PlacedFeature> surfaceSamples = placedFeatures.getHolder(surfaceSamplesLocation).orElse(null);
+            List<Holder<PlacedFeature>> topLayer = builder.getGenerationSettings()
+                    .getFeatures(GenerationStep.Decoration.TOP_LAYER_MODIFICATION);
+            if (surfaceSamples != null && !topLayer.contains(surfaceSamples)) {
+                builder.getGenerationSettings().addFeature(
+                        GenerationStep.Decoration.TOP_LAYER_MODIFICATION,
+                        surfaceSamples
+                );
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            modifiedBiomeInfo = builder.build();
+        }
     }
 
     private static Map<String, DynamicOreRequirements.NoiseBounds> discoverFilters(Registry<PlacedFeature> placedFeatures) {

@@ -7,5 +7,7 @@
   "rockandstone.midnightconfig.doOreReplacement": "Replace ores",
   "rockandstone.midnightconfig.doCreateRnsTerrainFiltering": "Filter Create RnS resource nodes by terrain",
   "rockandstone.midnightconfig.doLargeOreDepositsTerrainFiltering": "Filter Large Ore Deposits by terrain",
+  "rockandstone.midnightconfig.surfaceSampleFrequency": "Surface Samples frequency",
+  "rockandstone.midnightconfig.surfaceSampleFrequency.tooltip": "Chance to place one representative sample in a matching Overworld chunk. 0 disables samples; 1 always attempts placement. Requires ore replacement and Surface Samples.",
   "rockandstone.midnightconfig.doSilentAdvancements": "Hide built-in mod advancements"
 }

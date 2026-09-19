@@ -10,11 +10,11 @@ import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.rasanovum.rockandstone.RockAndStone;
 import net.rasanovum.rockandstone.RockAndStoneConfig;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
+import net.rasanovum.rockandstone.util.OreNameNormalizer;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -49,7 +49,7 @@ public final class LargeOreDepositsTerrainFilter {
 
             for (Map.Entry<String, DynamicOreRequirements.NoiseBounds> entry : filters.entrySet()) {
                 Optional<ResourceLocation> targetFeature = DynamicOreRequirements.targetFeatureId(entry.getKey());
-                if (targetFeature.isEmpty() || !depositOre.equals(normalizeOreId(targetFeature.get()))) {
+                if (targetFeature.isEmpty() || !depositOre.equals(OreNameNormalizer.normalizeId(targetFeature.get()))) {
                     continue;
                 }
 
@@ -101,7 +101,7 @@ public final class LargeOreDepositsTerrainFilter {
 
             for (Object value : blocks) {
                 if (value instanceof Block block) {
-                    oreNames.add(normalizeOreId(BuiltInRegistries.BLOCK.getKey(block)));
+                    oreNames.add(OreNameNormalizer.normalizeId(BuiltInRegistries.BLOCK.getKey(block)));
                 }
             }
         } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
@@ -125,30 +125,6 @@ public final class LargeOreDepositsTerrainFilter {
             logReflectionWarning(exception);
             return Optional.empty();
         }
-    }
-
-    private static String normalizeOreId(ResourceLocation id) {
-        return id.getNamespace() + ":" + normalizeOreName(id.getPath());
-    }
-
-    private static String normalizeOreName(String name) {
-        String normalized = name.toLowerCase(Locale.ROOT);
-        if (normalized.startsWith("ore_")) {
-            normalized = normalized.substring("ore_".length());
-        }
-        if (normalized.startsWith("deepslate_")) {
-            normalized = normalized.substring("deepslate_".length());
-        }
-        if (normalized.endsWith("_ore")) {
-            normalized = normalized.substring(0, normalized.length() - "_ore".length());
-        }
-        for (String suffix : new String[]{"_small", "_large", "_buried", "_upper", "_lower", "_middle"}) {
-            if (normalized.endsWith(suffix)) {
-                normalized = normalized.substring(0, normalized.length() - suffix.length());
-                break;
-            }
-        }
-        return normalized;
     }
 
     private static void logReflectionWarning(Throwable exception) {

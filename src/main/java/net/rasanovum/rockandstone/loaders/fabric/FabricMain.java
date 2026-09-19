@@ -40,7 +40,6 @@ public final class FabricMain implements ModInitializer {
                 VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, "noise_filter"),
                 NoiseFilterPlacementModifier.createType()
         );
-
         RockAndStone.initialize();
         RockAndStone.registerAdvancementTrigger();
         registerDataPackListener();

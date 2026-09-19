@@ -7,9 +7,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.Structure.GenerationContext;
 import net.rasanovum.rockandstone.RockAndStoneConfig;
 import net.rasanovum.rockandstone.util.DynamicOreRequirements;
+import net.rasanovum.rockandstone.util.OreNameNormalizer;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ public final class CreateRnsTerrainFilter {
         boolean foundFilter = false;
         for (Map.Entry<String, DynamicOreRequirements.NoiseBounds> entry : filters.entrySet()) {
             Optional<ResourceLocation> target = DynamicOreRequirements.targetFeatureId(entry.getKey());
-            if (target.isEmpty() || !resource.get().equals(normalizeOreName(target.get().getPath()))) {
+            if (target.isEmpty() || !resource.get().equals(OreNameNormalizer.normalizePath(target.get().getPath()))) {
                 continue;
             }
 
@@ -81,23 +81,6 @@ public final class CreateRnsTerrainFilter {
             path = path.substring("nether_".length());
         }
 
-        return path.isEmpty() ? Optional.empty() : Optional.of(normalizeOreName(path));
-    }
-
-    private static String normalizeOreName(String name) {
-        String normalized = name.toLowerCase(Locale.ROOT);
-        if (normalized.startsWith("ore_")) {
-            normalized = normalized.substring("ore_".length());
-        }
-        if (normalized.endsWith("_ore")) {
-            normalized = normalized.substring(0, normalized.length() - "_ore".length());
-        }
-        for (String suffix : new String[]{"_small", "_large", "_buried", "_upper", "_lower", "_middle"}) {
-            if (normalized.endsWith(suffix)) {
-                normalized = normalized.substring(0, normalized.length() - suffix.length());
-                break;
-            }
-        }
-        return normalized;
+        return path.isEmpty() ? Optional.empty() : Optional.of(OreNameNormalizer.normalizePath(path));
     }
 }

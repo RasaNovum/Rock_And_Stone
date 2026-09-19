@@ -1,11 +1,9 @@
-# Rock and Stone 0.6.1-d-2 Changelog:
+# Rock and Stone 0.6.1-d-3 Changelog:
 
 ## Changes:
 
-- Implemented Large Ore Deposits support, controlled through a config toggle `doLargeOreDepositsTerrainFiltering`.
-
-# Rock and Stone 0.6.0 Changelog:
-
+- Added optional Surface Samples world generation using the same active terrain filters as each ore.
+  - Added a `surfaceSampleFrequency` config value from `0.0` to `1.0`, defaulting to `0.05`.
 
 ### Features:
 

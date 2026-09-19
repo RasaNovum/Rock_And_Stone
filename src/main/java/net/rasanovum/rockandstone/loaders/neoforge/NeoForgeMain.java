@@ -21,6 +21,7 @@ import net.rasanovum.rockandstone.util.DynamicOreRequirements;
 import net.rasanovum.rockandstone.util.OreScanner;
 import net.rasanovum.rockandstone.util.VersionUtils;
 import net.rasanovum.rockandstone.worldgen.NoiseFilterPlacementModifier;
+import net.rasanovum.rockandstone.loaders.neoforge.worldgen.SurfaceSampleFeature;
 
 @Mod(RockAndStone.MOD_ID)
 public final class NeoForgeMain {
@@ -55,6 +56,12 @@ public final class NeoForgeMain {
                         RockAndStone.NOISE_FILTER_TYPE = type;
                         return type;
                     });
+        }
+
+        if (event.getRegistryKey().equals(BuiltInRegistries.FEATURE.key())) {
+            event.register(BuiltInRegistries.FEATURE.key(),
+                    VersionUtils.fromNamespaceAndPath(RockAndStone.MOD_ID, "surface_samples"),
+                    SurfaceSampleFeature::new);
         }
     }
 
