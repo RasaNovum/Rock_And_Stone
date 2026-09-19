@@ -6,5 +6,6 @@
   "rockandstone.midnightconfig.doRockAndStoneDebug": "Debug mode",
   "rockandstone.midnightconfig.doOreReplacement": "Replace ores",
   "rockandstone.midnightconfig.doCreateRnsTerrainFiltering": "Filter Create RnS resource nodes by terrain",
+  "rockandstone.midnightconfig.doLargeOreDepositsTerrainFiltering": "Filter Large Ore Deposits by terrain",
   "rockandstone.midnightconfig.doSilentAdvancements": "Hide built-in mod advancements"
 }

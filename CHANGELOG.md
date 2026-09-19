@@ -1,8 +1,8 @@
-# Rock and Stone 0.6.1-d-1 Changelog:
+# Rock and Stone 0.6.1-d-2 Changelog:
 
 ## Changes:
-- Added optional Create RnS resource-node terrain filtering, using the active ore noise filters.
-- Added the `doCreateRnsTerrainFiltering` config option; it is disabled by default to preserve existing Create RnS generation.
+
+- Implemented Large Ore Deposits support, controlled through a config toggle `doLargeOreDepositsTerrainFiltering`.
 
 # Rock and Stone 0.6.0 Changelog:
 

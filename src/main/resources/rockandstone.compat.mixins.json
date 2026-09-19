@@ -2,10 +2,11 @@
   "required": false,
   "minVersion": "0.8",
   "package": "net.rasanovum.rockandstone.mixin",
-  "plugin": "net.rasanovum.rockandstone.mixin.RockAndStoneMixinPlugin",
+  "plugin": "net.rasanovum.rockandstone.util.RockAndStoneMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CreateRnsDepositStructureMixin"
+    "CreateRnsDepositStructureMixin",
+    "LargeOreDepositsAbstractTargetMixin"
   ],
   "client": [],
   "server": [],

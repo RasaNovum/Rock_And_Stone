@@ -1,4 +1,4 @@
-package net.rasanovum.rockandstone.mixin;
+package net.rasanovum.rockandstone.util;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -10,17 +10,27 @@ import java.util.Set;
 public final class RockAndStoneMixinPlugin implements IMixinConfigPlugin {
     private static final String CREATE_RNS_DEPOSIT_STRUCTURE =
             "com.bmaster.createrns.content.deposit.worldgen.DepositStructure";
+    private static final String LARGE_ORE_DEPOSITS_DEPOSIT =
+            "com.endertech.minecraft.mods.adlods.deposit.Deposit";
+    private static final String LARGE_ORE_DEPOSITS_ABSTRACT_TARGET =
+            "com.endertech.minecraft.mods.adlods.target.AbstractTarget";
     private boolean createRnsInstalled;
+    private boolean largeOreDepositsInstalled;
 
     @Override
     public void onLoad(String mixinPackage) {
         createRnsInstalled = isClassAvailable(CREATE_RNS_DEPOSIT_STRUCTURE);
+        largeOreDepositsInstalled = isClassAvailable(LARGE_ORE_DEPOSITS_DEPOSIT)
+                && isClassAvailable(LARGE_ORE_DEPOSITS_ABSTRACT_TARGET);
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.endsWith("CreateRnsDepositStructureMixin")) {
             return createRnsInstalled;
+        }
+        if (mixinClassName.endsWith("LargeOreDepositsAbstractTargetMixin")) {
+            return largeOreDepositsInstalled;
         }
         return true;
     }
